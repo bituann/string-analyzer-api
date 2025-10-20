@@ -25,4 +25,8 @@ public class DatabaseEntity {
     public boolean stringExists (String string) {
         return database.containsKey(string);
     }
+
+    public void removeString (String string) {
+        database.remove(string);
+    }
 }
