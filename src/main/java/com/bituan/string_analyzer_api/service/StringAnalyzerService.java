@@ -7,7 +7,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 public class StringAnalyzerService {
-    public int getStringLength (String string) {
+    public int stringLength(String string) {
         return string.length();
     }
 
