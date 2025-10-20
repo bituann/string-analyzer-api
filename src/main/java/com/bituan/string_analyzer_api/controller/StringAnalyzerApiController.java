@@ -7,9 +7,7 @@ import com.bituan.string_analyzer_api.service.StringAnalyzerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
@@ -65,5 +63,14 @@ public class StringAnalyzerApiController {
         responseModel.setCreated_at(Instant.now());
 
         return ResponseEntity.ok().header("Content-Type", "application/json").body(responseModel);
+    }
+
+    @DeleteMapping("/strings/{string_value}")
+    public ResponseEntity<String> deleteString (@PathVariable("string_value") String string) {
+        if (!databaseEntity.stringExists(string)) {
+            return ResponseEntity.status(HttpStatusCode.valueOf(404)).body("String does not exist in the system");
+        }
+        databaseEntity.removeString(string);
+        return new ResponseEntity<>(HttpStatusCode.valueOf(204));
     }
 }
