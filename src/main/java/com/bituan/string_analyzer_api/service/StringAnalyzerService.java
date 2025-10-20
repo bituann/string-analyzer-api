@@ -1,5 +1,10 @@
 package com.bituan.string_analyzer_api.service;
 
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,5 +27,12 @@ public class StringAnalyzerService {
 
     public int wordCount (String string) {
         return string.split(" ").length;
+    }
+
+    public String sha256Hash (String string) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hash = digest.digest(string.getBytes(StandardCharsets.UTF_8));
+
+        return new BigInteger(1, hash).toString(16);
     }
 }
