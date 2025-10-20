@@ -30,7 +30,7 @@ public class StringAnalyzerApiController {
     @PostMapping("/strings")
     public ResponseEntity<?> postString (@RequestBody String string) throws NoSuchAlgorithmException {
         // string exists
-        if (!databaseEntity.stringExists(string)) {
+        if (databaseEntity.stringExists(string)) {
             return ResponseEntity.status(HttpStatusCode.valueOf(409)).body("String already exists in the system");
         }
 
