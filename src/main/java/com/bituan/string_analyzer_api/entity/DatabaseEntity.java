@@ -35,7 +35,7 @@ public class DatabaseEntity {
 
     public List<StringPropertiesModel> getStringsByFilter (Boolean isPalindrome, Integer minLength, Integer maxLength,
                                                                         Integer wordCount, String containsCharacter) {
-        List<StringPropertiesModel> result = (List<StringPropertiesModel>) database.values();
+        List<StringPropertiesModel> result = new ArrayList<>(database.values());
 
         if (isPalindrome != null) {
             result = result.stream().filter(string -> string.getIs_palindrome() == isPalindrome).collect(Collectors.toList());
