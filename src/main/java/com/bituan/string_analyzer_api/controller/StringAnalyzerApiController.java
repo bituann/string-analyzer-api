@@ -65,6 +65,23 @@ public class StringAnalyzerApiController {
         return ResponseEntity.ok().header("Content-Type", "application/json").body(responseModel);
     }
 
+    @GetMapping("/strings/{string_value}")
+    public ResponseEntity<?> getString (@PathVariable("string_value") String string) {
+        if (!databaseEntity.stringExists(string)) {
+            return ResponseEntity.status(HttpStatusCode.valueOf(404)).body("String does not exist in the system");
+        }
+
+        StringPropertiesModel properties = databaseEntity.getString(string);
+        ResponseModel response = new ResponseModel();
+
+        response.setId(properties.getSha256_hash());
+        response.setValue(string);
+        response.setProperties(properties);
+        response.setCreated_at(properties.getCreated_at());
+
+        return ResponseEntity.ok(response);
+    }
+
     @DeleteMapping("/strings/{string_value}")
     public ResponseEntity<String> deleteString (@PathVariable("string_value") String string) {
         if (!databaseEntity.stringExists(string)) {
