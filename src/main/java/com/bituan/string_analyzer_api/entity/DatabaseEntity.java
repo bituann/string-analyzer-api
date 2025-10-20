@@ -1,10 +1,12 @@
 package com.bituan.string_analyzer_api.entity;
 
 import com.bituan.string_analyzer_api.model.StringPropertiesModel;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Service
 public class DatabaseEntity {
     private Map<String, StringPropertiesModel> database;
 
