@@ -6,9 +6,7 @@ import com.bituan.string_analyzer_api.model.StringPropertiesModel;
 import com.bituan.string_analyzer_api.service.StringAnalyzerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,14 +27,14 @@ public class StringAnalyzerApiController {
     }
 
     @PostMapping("/strings")
-    public ResponseEntity<?> postString (@RequestBody Map<String, Object> request) throws NoSuchAlgorithmException {
-
+    public ResponseEntity<?> postString (@RequestBody Map<String, ?> request) throws NoSuchAlgorithmException {
+        // check that value is a string
         if (!(request.get("value") instanceof String)) {
             return ResponseEntity.status(HttpStatusCode.valueOf(422)).body("Invalid data type for \"value\" (must be string)");
         }
 
         // get string stored in "value"
-        String string = request.get("value").toString();
+        String string = (String) request.get("value");
 
         // string exists
         if (databaseEntity.stringExists(string)) {
