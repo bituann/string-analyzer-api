@@ -1,5 +1,9 @@
 package com.bituan.string_analyzer_api.service;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 public class StringAnalyzerService {
     public int getStringLength (String string) {
         return string.length();
@@ -9,6 +13,10 @@ public class StringAnalyzerService {
         String reverseString = String.valueOf(new StringBuilder(string).reverse());
 
         return string.equalsIgnoreCase(reverseString);
+    }
 
+    public int numberOfUniqueCharacters (String string) {
+        Set<String> chars = new HashSet(List.of(string.split("")));
+        return chars.size();
     }
 }
