@@ -4,10 +4,7 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class StringAnalyzerService {
     public int getStringLength (String string) {
@@ -34,5 +31,21 @@ public class StringAnalyzerService {
         byte[] hash = digest.digest(string.getBytes(StandardCharsets.UTF_8));
 
         return new BigInteger(1, hash).toString(16);
+    }
+
+    public Map<String, Integer> characterMap (String string) {
+        Map<String, Integer> characterMap = new HashMap<>();
+        String[] stringChars = string.split("");
+
+        for (String s : stringChars) {
+            if (characterMap.get(s) == null) {
+                characterMap.put(s, 1);
+                continue;
+            }
+            Integer value = characterMap.get(s); //current value
+            characterMap.put(s, ++value); //update value and add to map
+        }
+
+        return characterMap;
     }
 }
