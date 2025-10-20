@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
+import java.util.Map;
 
 @RestController
 public class StringAnalyzerApiController {
@@ -28,7 +29,15 @@ public class StringAnalyzerApiController {
     }
 
     @PostMapping("/strings")
-    public ResponseEntity<?> postString (@RequestBody String string) throws NoSuchAlgorithmException {
+    public ResponseEntity<?> postString (@RequestBody Map<String, Object> request) throws NoSuchAlgorithmException {
+
+        if (!(request.get("value") instanceof String)) {
+            return ResponseEntity.status(HttpStatusCode.valueOf(422)).body("Invalid data type for \"value\" (must be string)");
+        }
+
+        // get string stored in "value"
+        String string = request.get("value").toString();
+
         // string exists
         if (databaseEntity.stringExists(string)) {
             return ResponseEntity.status(HttpStatusCode.valueOf(409)).body("String already exists in the system");
@@ -47,6 +56,8 @@ public class StringAnalyzerApiController {
         properties.setWord_count(stringAnalyzerService.wordCount(string));
         properties.setSha256_hash(stringAnalyzerService.sha256Hash(string));
         properties.setCharacter_frequency_map(stringAnalyzerService.characterMap(string));
+
+        databaseEntity.addString(string, properties);
 
         ResponseModel responseModel = new ResponseModel();
 
