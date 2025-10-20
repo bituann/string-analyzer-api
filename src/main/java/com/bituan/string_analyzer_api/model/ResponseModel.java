@@ -1,16 +1,16 @@
 package com.bituan.string_analyzer_api.model;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 public class ResponseModel {
     private String id;
     private String value;
     private StringPropertiesModel properties;
-    private LocalDateTime created_at;
+    private Instant created_at;
 
     public ResponseModel() {}
 
-    public ResponseModel(String value, StringPropertiesModel properties, LocalDateTime created_at, String id) {
+    public ResponseModel(String value, StringPropertiesModel properties, Instant created_at, String id) {
         this.value = value;
         this.properties = properties;
         this.created_at = created_at;
@@ -41,11 +41,11 @@ public class ResponseModel {
         this.properties = properties;
     }
 
-    public LocalDateTime getCreated_at() {
+    public Instant getCreated_at() {
         return created_at;
     }
 
-    public void setCreated_at(LocalDateTime created_at) {
+    public void setCreated_at(Instant created_at) {
         this.created_at = created_at;
     }
 }
