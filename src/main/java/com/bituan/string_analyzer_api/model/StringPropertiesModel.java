@@ -33,7 +33,7 @@ public class StringPropertiesModel {
         this.length = length;
     }
 
-    public boolean isIs_palindrome() {
+    public boolean getIs_palindrome() {
         return is_palindrome;
     }
 
