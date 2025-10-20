@@ -19,4 +19,8 @@ public class StringAnalyzerService {
         Set<String> chars = new HashSet(List.of(string.split("")));
         return chars.size();
     }
+
+    public int wordCount (String string) {
+        return string.split(" ").length;
+    }
 }
