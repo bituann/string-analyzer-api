@@ -52,6 +52,7 @@ public class StringAnalyzerApiController {
         properties.setWord_count(stringAnalyzerService.wordCount(string));
         properties.setSha256_hash(stringAnalyzerService.sha256Hash(string));
         properties.setCharacter_frequency_map(stringAnalyzerService.characterMap(string));
+        properties.setCreated_at(Instant.now());
 
         databaseEntity.addString(string, properties);
 
@@ -60,7 +61,7 @@ public class StringAnalyzerApiController {
         responseModel.setId(properties.getSha256_hash());
         responseModel.setValue(string);
         responseModel.setProperties(properties);
-        responseModel.setCreated_at(Instant.now());
+        responseModel.setCreated_at(properties.getCreated_at());
 
         return ResponseEntity.ok().header("Content-Type", "application/json").body(responseModel);
     }
