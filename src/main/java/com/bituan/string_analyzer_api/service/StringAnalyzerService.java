@@ -1,11 +1,14 @@
 package com.bituan.string_analyzer_api.service;
 
+import org.springframework.stereotype.Service;
+
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
+@Service
 public class StringAnalyzerService {
     public int stringLength(String string) {
         return string.length();
