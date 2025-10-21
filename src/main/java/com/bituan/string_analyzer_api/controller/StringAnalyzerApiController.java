@@ -1,9 +1,8 @@
 package com.bituan.string_analyzer_api.controller;
 
 import com.bituan.string_analyzer_api.entity.DatabaseEntity;
-import com.bituan.string_analyzer_api.model.QueryResponseModel;
-import com.bituan.string_analyzer_api.model.ResponseModel;
-import com.bituan.string_analyzer_api.model.StringPropertiesModel;
+import com.bituan.string_analyzer_api.model.*;
+import com.bituan.string_analyzer_api.service.NLQueryParserService;
 import com.bituan.string_analyzer_api.service.StringAnalyzerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
@@ -19,11 +18,14 @@ import java.util.stream.Collectors;
 public class StringAnalyzerApiController {
     private final StringAnalyzerService stringAnalyzerService;
     private final DatabaseEntity databaseEntity;
+    private final NLQueryParserService nlQueryParserService;
 
     @Autowired
-    public StringAnalyzerApiController (StringAnalyzerService stringAnalyzerService, DatabaseEntity databaseEntity) {
+    public StringAnalyzerApiController (StringAnalyzerService stringAnalyzerService, DatabaseEntity databaseEntity,
+                                        NLQueryParserService nlQueryParserService) {
         this.stringAnalyzerService = stringAnalyzerService;
         this.databaseEntity = databaseEntity;
+        this.nlQueryParserService = nlQueryParserService;
     }
 
     @PostMapping("/strings")
@@ -123,6 +125,44 @@ public class StringAnalyzerApiController {
         response.setData(resultsMain);
         response.setCount(results.size());
         response.setFilters_applied(filters_applied);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/strings/filter-by-natural-language")
+    public ResponseEntity<NLQueryResponseModel> getStringByNL (@RequestParam String query) {
+        // filters list
+        Boolean isPalindrome = null;
+        Integer minLength = null;
+        Integer maxLength = null;
+        Integer wordCount = null;
+        String containsCharacter = null;
+
+        // parsed query filters
+        FilterModel queryFilters = nlQueryParserService.stringToFilter(query);
+
+        //set filter variables
+        isPalindrome = queryFilters.getIs_palindrome();
+        minLength = queryFilters.getMin_length();
+        maxLength = queryFilters.getMax_length();
+        wordCount = queryFilters.getWord_count();
+        containsCharacter = queryFilters.getContains_character();
+
+        // execute query with filters
+        List<StringPropertiesModel> results = databaseEntity.getStringsByFilter(isPalindrome, minLength, maxLength, wordCount, containsCharacter);
+        List<ResponseModel> resultsMain = new ArrayList<>();
+
+        // data part of result
+        for (StringPropertiesModel result : results) {
+            resultsMain.add(new ResponseModel(result.getString(), result, result.getCreated_at(), result.getSha256_hash()));
+        }
+
+        // response model
+        NLQueryResponseModel response = new NLQueryResponseModel();
+
+        response.setData(resultsMain);
+        response.setCount(resultsMain.size());
+        response.setInterpretedQuery(query, queryFilters);
 
         return ResponseEntity.ok(response);
     }
