@@ -3,6 +3,8 @@ package com.bituan.string_analyzer_api.service;
 import com.bituan.string_analyzer_api.model.FilterModel;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -63,6 +65,18 @@ public class NLQueryParserService {
 
         if (match == null) {
             return null;
+        }
+
+        if (match.toLowerCase().contains("vowel")) {
+            match = match.toLowerCase().strip();
+            Map<String, String> vowels = new HashMap<>();
+            vowels.put("first vowel", "a");
+            vowels.put("second vowel", "e");
+            vowels.put("third vowel", "i");
+            vowels.put("fourth vowel", "o");
+            vowels.put("fifth vowel", "u");
+
+            return vowels.get(match);
         }
 
         // reuse regex & match to get character from string
