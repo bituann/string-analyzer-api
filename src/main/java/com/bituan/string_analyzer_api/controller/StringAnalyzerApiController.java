@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 public class StringAnalyzerApiController {
@@ -107,18 +108,16 @@ public class StringAnalyzerApiController {
             resultsMain.add(new ResponseModel(result.getString(), result, result.getCreated_at(), result.getSha256_hash()));
         }
 
-        final Map<String, Object> filters_applied = new HashMap<>();
+        Map<String, Object> filters = new HashMap<>();
 
-        filters_applied.put("is_palindrome", is_palindrome);
-        filters_applied.put("min_length", min_length);
-        filters_applied.put("max_length", max_length);
-        filters_applied.put("word_count", word_count);
-        filters_applied.put("contains_character", contains_character);
+        filters.put("is_palindrome", is_palindrome);
+        filters.put("min_length", min_length);
+        filters.put("max_length", max_length);
+        filters.put("word_count", word_count);
+        filters.put("contains_character", contains_character);
 
-        filters_applied.keySet().stream().filter(key -> {
-            if (filters_applied.get(key) == null) filters_applied.remove(key);
-            return true;
-        });
+        Map<String, Object> filters_applied = filters.entrySet().stream().filter(entry -> entry.getValue() != null)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         QueryResponseModel response = new QueryResponseModel();
         response.setData(resultsMain);
