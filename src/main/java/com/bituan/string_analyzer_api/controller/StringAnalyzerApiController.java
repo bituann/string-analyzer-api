@@ -1,6 +1,7 @@
 package com.bituan.string_analyzer_api.controller;
 
 import com.bituan.string_analyzer_api.entity.DatabaseEntity;
+import com.bituan.string_analyzer_api.model.QueryResponseModel;
 import com.bituan.string_analyzer_api.model.ResponseModel;
 import com.bituan.string_analyzer_api.model.StringPropertiesModel;
 import com.bituan.string_analyzer_api.service.StringAnalyzerService;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 public class StringAnalyzerApiController {
@@ -79,6 +80,49 @@ public class StringAnalyzerApiController {
         response.setValue(string);
         response.setProperties(properties);
         response.setCreated_at(properties.getCreated_at());
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/strings")
+    public ResponseEntity<?> getStringByQuery (
+            @RequestParam(required = false) Boolean is_palindrome,
+            @RequestParam(required = false) Integer min_length,
+            @RequestParam(required = false) Integer max_length,
+            @RequestParam(required = false) Integer word_count,
+            @RequestParam(required = false) String contains_character) {
+
+        if (contains_character.length() > 1) {
+            return ResponseEntity.status(HttpStatusCode.valueOf(400)).body("Invalid query parameter values or types");
+        }
+
+        // apply filters and get results from database
+        List<StringPropertiesModel> results = databaseEntity.getStringsByFilter(is_palindrome, min_length, max_length,
+                word_count, contains_character);
+
+        List<ResponseModel> resultsMain = new ArrayList<>();
+
+        for (StringPropertiesModel result : results) {
+            resultsMain.add(new ResponseModel(result.getString(), result, result.getCreated_at(), result.getSha256_hash()));
+        }
+
+        final Map<String, Object> filters_applied = new HashMap<>();
+
+        filters_applied.put("is_palindrome", is_palindrome);
+        filters_applied.put("min_length", min_length);
+        filters_applied.put("max_length", max_length);
+        filters_applied.put("word_count", word_count);
+        filters_applied.put("contains_character", contains_character);
+
+        filters_applied.keySet().stream().filter(key -> {
+            if (filters_applied.get(key) == null) filters_applied.remove(key);
+            return true;
+        });
+
+        QueryResponseModel response = new QueryResponseModel();
+        response.setData(resultsMain);
+        response.setCount(results.size());
+        response.setFilters_applied(filters_applied);
 
         return ResponseEntity.ok(response);
     }
