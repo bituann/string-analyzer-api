@@ -57,7 +57,6 @@ public class StringAnalyzerApiController {
         properties.setWord_count(stringAnalyzerService.wordCount(string));
         properties.setSha256_hash(stringAnalyzerService.sha256Hash(string));
         properties.setCharacter_frequency_map(stringAnalyzerService.characterMap(string));
-        properties.setCreated_at(Instant.now());
 
         databaseEntity.addString(string, properties);
 
@@ -66,9 +65,9 @@ public class StringAnalyzerApiController {
         responseModel.setId(properties.getSha256_hash());
         responseModel.setValue(string);
         responseModel.setProperties(properties);
-        responseModel.setCreated_at(properties.getCreated_at());
+        responseModel.setCreated_at(Instant.now());
 
-        return ResponseEntity.ok().header("Content-Type", "application/json").body(responseModel);
+        return ResponseEntity.status(HttpStatusCode.valueOf(201)).header("Content-Type", "application/json").body(responseModel);
     }
 
     @GetMapping("/strings/{string_value}")
@@ -83,7 +82,7 @@ public class StringAnalyzerApiController {
         response.setId(properties.getSha256_hash());
         response.setValue(string);
         response.setProperties(properties);
-        response.setCreated_at(properties.getCreated_at());
+        response.setCreated_at(Instant.now());
 
         return ResponseEntity.ok(response);
     }
@@ -107,7 +106,7 @@ public class StringAnalyzerApiController {
         List<ResponseModel> resultsMain = new ArrayList<>();
 
         for (StringPropertiesModel result : results) {
-            resultsMain.add(new ResponseModel(result.getString(), result, result.getCreated_at(), result.getSha256_hash()));
+            resultsMain.add(new ResponseModel(result.getString(), result, Instant.now(), result.getSha256_hash()));
         }
 
         Map<String, Object> filters = new HashMap<>();
@@ -158,7 +157,7 @@ public class StringAnalyzerApiController {
 
         // data part of result
         for (StringPropertiesModel result : results) {
-            resultsMain.add(new ResponseModel(result.getString(), result, result.getCreated_at(), result.getSha256_hash()));
+            resultsMain.add(new ResponseModel(result.getString(), result, Instant.now(), result.getSha256_hash()));
         }
 
         // response model
