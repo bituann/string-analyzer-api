@@ -15,12 +15,11 @@ public class StringPropertiesModel {
     private int word_count;
     private String sha256_hash;
     private Map<String, Integer> character_frequency_map;
-    private Instant created_at;
 
     public StringPropertiesModel() {}
 
     public StringPropertiesModel(int length, boolean is_palindrome, int unique_characters, int word_count,
-                                 String sha256_hash, Map<String, Integer> character_frequency_map, Instant created_at) {
+                                 String sha256_hash, Map<String, Integer> character_frequency_map) {
         this.length = length;
         this.is_palindrome = is_palindrome;
         this.unique_characters = unique_characters;
