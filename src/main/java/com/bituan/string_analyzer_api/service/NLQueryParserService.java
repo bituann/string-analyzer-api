@@ -1,10 +1,12 @@
 package com.bituan.string_analyzer_api.service;
 
 import com.bituan.string_analyzer_api.model.FilterModel;
+import org.springframework.stereotype.Service;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Service
 public class NLQueryParserService {
 
     public NLQueryParserService() {}
