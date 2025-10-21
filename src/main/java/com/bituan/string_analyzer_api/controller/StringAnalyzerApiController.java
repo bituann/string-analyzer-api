@@ -132,11 +132,11 @@ public class StringAnalyzerApiController {
     @GetMapping("/strings/filter-by-natural-language")
     public ResponseEntity<NLQueryResponseModel> getStringByNL (@RequestParam String query) {
         // filters list
-        Boolean isPalindrome = null;
-        Integer minLength = null;
-        Integer maxLength = null;
-        Integer wordCount = null;
-        String containsCharacter = null;
+        Boolean isPalindrome;
+        Integer minLength;
+        Integer maxLength;
+        Integer wordCount;
+        String containsCharacter;
 
         // parsed query filters
         FilterModel queryFilters = nlQueryParserService.stringToFilter(query);
@@ -147,6 +147,10 @@ public class StringAnalyzerApiController {
         maxLength = queryFilters.getMax_length();
         wordCount = queryFilters.getWord_count();
         containsCharacter = queryFilters.getContains_character();
+
+        if (isPalindrome == null && minLength == null && maxLength == null && wordCount == null && containsCharacter == null) {
+            return new ResponseEntity<>(HttpStatusCode.valueOf(400));
+        }
 
         // execute query with filters
         List<StringPropertiesModel> results = databaseEntity.getStringsByFilter(isPalindrome, minLength, maxLength, wordCount, containsCharacter);
