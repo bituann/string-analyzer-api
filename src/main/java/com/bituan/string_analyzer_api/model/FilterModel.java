@@ -1,5 +1,8 @@
 package com.bituan.string_analyzer_api.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class FilterModel {
     private Boolean is_palindrome;
     private Integer min_length;
