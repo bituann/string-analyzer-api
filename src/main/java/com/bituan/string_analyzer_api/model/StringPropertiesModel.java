@@ -1,9 +1,14 @@
 package com.bituan.string_analyzer_api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.time.Instant;
 import java.util.Map;
 
 public class StringPropertiesModel {
+    @JsonIgnore
+    private String string;
+
     private int length;
     private boolean is_palindrome;
     private int unique_characters;
@@ -23,6 +28,14 @@ public class StringPropertiesModel {
         this.sha256_hash = sha256_hash;
         this.character_frequency_map = character_frequency_map;
         this.created_at = created_at;
+    }
+
+    public String getString() {
+        return string;
+    }
+
+    public void setString(String string) {
+        this.string = string;
     }
 
     public int getLength() {
