@@ -1,12 +1,11 @@
 package com.bituan.string_analyzer_api.model;
 
 import java.util.List;
-import java.util.Map;
 
 public class NLQueryResponseModel {
     private List<ResponseModel> data;
     private int count;
-    private InterpretedQuery interpretedQuery;
+    private InterpretedQuery interpreted_query;
 
     public NLQueryResponseModel () {}
 
@@ -27,11 +26,11 @@ public class NLQueryResponseModel {
     }
 
     public InterpretedQuery getInterpretedQuery() {
-        return interpretedQuery;
+        return interpreted_query;
     }
 
     public void setInterpretedQuery(String original, FilterModel parsed_filters) {
-        this.interpretedQuery = new InterpretedQuery(original, parsed_filters);
+        this.interpreted_query = new InterpretedQuery(original, parsed_filters);
     }
 }
 
