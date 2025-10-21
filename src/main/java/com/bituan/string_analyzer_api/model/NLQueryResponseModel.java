@@ -30,16 +30,16 @@ public class NLQueryResponseModel {
         return interpretedQuery;
     }
 
-    public void setInterpretedQuery(String original, Map<String, Object> parsed_filters) {
+    public void setInterpretedQuery(String original, FilterModel parsed_filters) {
         this.interpretedQuery = new InterpretedQuery(original, parsed_filters);
     }
 }
 
 class InterpretedQuery {
     private String original;
-    private Map<String, Object> parsed_filters;
+    private FilterModel parsed_filters;
 
-    public InterpretedQuery(String original, Map<String, Object> parsed_filters) {
+    public InterpretedQuery(String original, FilterModel parsed_filters) {
         this.original = original;
         this.parsed_filters = parsed_filters;
     }
@@ -52,11 +52,11 @@ class InterpretedQuery {
         this.original = original;
     }
 
-    public Map<String, Object> getParsed_filters() {
+    public FilterModel getParsed_filters() {
         return parsed_filters;
     }
 
-    public void setParsed_filters(Map<String, Object> parsed_filters) {
+    public void setParsed_filters(FilterModel parsed_filters) {
         this.parsed_filters = parsed_filters;
     }
 }
