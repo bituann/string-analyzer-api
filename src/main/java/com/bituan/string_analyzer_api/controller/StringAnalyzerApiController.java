@@ -47,6 +47,7 @@ public class StringAnalyzerApiController {
 
         StringPropertiesModel properties = new StringPropertiesModel();
 
+        properties.setString(string);
         properties.setLength(stringAnalyzerService.stringLength(string));
         properties.setIs_palindrome(stringAnalyzerService.isPalindrome(string));
         properties.setUnique_characters(stringAnalyzerService.numberOfUniqueCharacters(string));
