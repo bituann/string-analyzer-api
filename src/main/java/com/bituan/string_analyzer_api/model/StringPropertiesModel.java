@@ -27,7 +27,6 @@ public class StringPropertiesModel {
         this.word_count = word_count;
         this.sha256_hash = sha256_hash;
         this.character_frequency_map = character_frequency_map;
-        this.created_at = created_at;
     }
 
     public String getString() {
@@ -84,13 +83,5 @@ public class StringPropertiesModel {
 
     public void setCharacter_frequency_map(Map<String, Integer> character_frequency_map) {
         this.character_frequency_map = character_frequency_map;
-    }
-
-    public Instant getCreated_at() {
-        return created_at;
-    }
-
-    public void setCreated_at(Instant created_at) {
-        this.created_at = created_at;
     }
 }
