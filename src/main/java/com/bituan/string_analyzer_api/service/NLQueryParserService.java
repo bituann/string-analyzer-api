@@ -54,7 +54,26 @@ public class NLQueryParserService {
     }
 
     private Integer stringToWordCountFilter (String string) {
-        String regex = "((\\d+\\s*(?:words))|((single|double|triple)\\s*word(s)?))";
+        String regex = "((\\d+\\s*(?:word(s)?))|((single|double|triple)\\s*word(s)?))";
+
+        String match = matchRegexPattern(string, regex);
+
+        if (match == null) {
+            return null;
+        }
+
+        if (match.toLowerCase().contains("single") || match.toLowerCase().contains("double") ||
+                match.toLowerCase().contains("triple") || match.toLowerCase().contains("quadruple")) {
+            match = match.toLowerCase().strip();
+            Map<String, Integer> numbers = new HashMap<>();
+            numbers.put("single", 1);
+            numbers.put("double", 2);
+            numbers.put("triple", 3);
+            numbers.put("quadruple", 4);
+
+            return numbers.get(match.split(" ")[0]);
+        }
+
         return matchNumberRegex(string, regex);
     }
 
