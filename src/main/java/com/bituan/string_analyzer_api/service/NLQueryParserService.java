@@ -43,7 +43,7 @@ public class NLQueryParserService {
         return filters;
     }
 
-        private Integer stringToMinLengthFilter (String string) {
+    private Integer stringToMinLengthFilter (String string) {
         String regex = "(?:min|longer)[a-zA-Z\\s]*\\d+";
         return matchNumberRegex(string, regex);
     }
