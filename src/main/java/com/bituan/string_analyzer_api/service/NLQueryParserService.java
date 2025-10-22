@@ -44,13 +44,39 @@ public class NLQueryParserService {
     }
 
     private Integer stringToMinLengthFilter (String string) {
-        String regex = "(?:min|longer)[a-zA-Z\\s]*\\d+";
-        return matchNumberRegex(string, regex);
+        String regex = "(?:min)[a-zA-Z\\s]*\\d+";
+        Integer number = matchNumberRegex(string, regex);
+
+        if (number != null) {
+            return number;
+        }
+
+        regex = "(?:longer)[a-zA-Z\\s]*\\d+";
+        number = matchNumberRegex(string, regex);
+
+        if (number == null) {
+            return number;
+        } else {
+            return ++number;
+        }
     }
 
     private Integer stringToMaxLengthFilter (String string) {
-        String regex = "(?:max|shorter)[a-zA-Z\\s]*\\d+";
-        return matchNumberRegex(string, regex);
+        String regex = "(?:max)[a-zA-Z\\s]*\\d+";
+        Integer number = matchNumberRegex(string, regex);
+
+        if (number != null) {
+            return number;
+        }
+
+        regex = "(?:shorter)[a-zA-Z\\s]*\\d+";
+        number = matchNumberRegex(string, regex);
+
+        if (number == null) {
+            return number;
+        } else {
+            return --number;
+        }
     }
 
     private Integer stringToWordCountFilter (String string) {
