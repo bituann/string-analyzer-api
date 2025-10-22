@@ -99,7 +99,7 @@ public class NLQueryParserService {
     }
 
     private String stringToContainsCharacterFilter (String string) {
-        String regex = "((?:containing|contain)[a-zA-Z\\s]*letter\\s*[a-zA-Z]{1}(?:\\s?))|" +
+        String regex = "((?:containing|contain(s)?)[a-zA-Z\\s]*letter\\s*[a-zA-Z]{1}(?:\\s?))|" +
                 "(?:first|second|third|fourth|fifth|last)\\s*(vowel|consonant)";
         String match = matchRegexPattern(string, regex);
 
