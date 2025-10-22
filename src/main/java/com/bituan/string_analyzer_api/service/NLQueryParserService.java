@@ -100,7 +100,7 @@ public class NLQueryParserService {
 
     private String stringToContainsCharacterFilter (String string) {
         String regex = "((?:containing|contain)[a-zA-Z\\s]*letter\\s*[a-zA-Z]{1}(?:\\s?))|" +
-                "(?:first|second|third|fourth|fifth)\\s*vowel";
+                "(?:first|second|third|fourth|fifth|last)\\s*(vowel|consonant)";
         String match = matchRegexPattern(string, regex);
 
         if (match == null) {
@@ -115,6 +115,20 @@ public class NLQueryParserService {
             vowels.put("third vowel", "i");
             vowels.put("fourth vowel", "o");
             vowels.put("fifth vowel", "u");
+            vowels.put("last vowel", "u");
+
+            return vowels.get(match);
+        }
+
+        if (match.toLowerCase().contains("consonant")) {
+            match = match.toLowerCase().strip();
+            Map<String, String> vowels = new HashMap<>();
+            vowels.put("first consonant", "b");
+            vowels.put("second consonant", "c");
+            vowels.put("third consonant", "d");
+            vowels.put("fourth consonant", "f");
+            vowels.put("fifth consonant", "g");
+            vowels.put("last consonant", "z");
 
             return vowels.get(match);
         }
