@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 public class StringAnalyzerApiController {
@@ -90,7 +89,11 @@ public class StringAnalyzerApiController {
     @GetMapping("/strings")
     public ResponseEntity<?> getStringByQuery (FilterModel filters) {
 
-        if (filters.getContains_character().isEmpty() || (filters.getContains_character() != null && filters.getContains_character().length() > 1)) {
+        if (filters.getContains_character() != null && filters.getContains_character().isEmpty()) {
+            filters.setContains_character(null);
+        }
+
+        if (filters.getContains_character() != null && filters.getContains_character().length() > 1) {
             return ResponseEntity.status(HttpStatusCode.valueOf(400)).body("Invalid query parameter values or types");
         }
 
