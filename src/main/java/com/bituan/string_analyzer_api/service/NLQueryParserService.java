@@ -18,27 +18,22 @@ public class NLQueryParserService {
 
         // palindrome check
         if (string.contains("palindrome") || string.contains("palindromic")) filters.setIs_palindrome(true);
-        System.out.println(filters.getIs_palindrome());
 
         // min length check
         Integer minLength = stringToMinLengthFilter(string);
         filters.setMin_length(minLength);
-        System.out.println(filters.getMin_length());
 
         // max length check
         Integer maxLength = stringToMaxLengthFilter(string);
         filters.setMax_length(maxLength);
-        System.out.println(filters.getMax_length());
 
         // word count check
         Integer wordCount = stringToWordCountFilter(string);
         filters.setWord_count(wordCount);
-        System.out.println(filters.getWord_count());
 
         // contains character check
         String containsCharacter = stringToContainsCharacterFilter(string);
         filters.setContains_character(containsCharacter);
-        System.out.println(containsCharacter);
 
         return filters;
     }
