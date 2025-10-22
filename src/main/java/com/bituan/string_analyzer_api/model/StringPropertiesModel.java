@@ -2,7 +2,6 @@ package com.bituan.string_analyzer_api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.time.Instant;
 import java.util.Map;
 
 public class StringPropertiesModel {
@@ -76,7 +75,7 @@ public class StringPropertiesModel {
         this.sha256_hash = sha256_hash;
     }
 
-    public Map<String, Integer> getCharcater_frequency_map() {
+    public Map<String, Integer> getCharacter_frequency_map() {
         return character_frequency_map;
     }
 
