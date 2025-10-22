@@ -50,7 +50,7 @@ public class DatabaseEntity {
             result = result.stream().filter(string -> string.getWord_count() == filters.getWord_count()).collect(Collectors.toList());
         }
         if (filters.getContains_character() != null) {
-            result = result.stream().filter(string -> string.getCharcater_frequency_map().containsKey(filters.getContains_character())).collect(Collectors.toList());
+            result = result.stream().filter(string -> string.getCharacter_frequency_map().containsKey(filters.getContains_character())).collect(Collectors.toList());
         }
 
         return result;
