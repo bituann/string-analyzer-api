@@ -88,20 +88,14 @@ public class StringAnalyzerApiController {
     }
 
     @GetMapping("/strings")
-    public ResponseEntity<?> getStringByQuery (
-            @RequestParam(required = false) Boolean is_palindrome,
-            @RequestParam(required = false) Integer min_length,
-            @RequestParam(required = false) Integer max_length,
-            @RequestParam(required = false) Integer word_count,
-            @RequestParam(required = false) String contains_character) {
+    public ResponseEntity<?> getStringByQuery (FilterModel filters) {
 
-        if (contains_character.length() > 1) {
+        if (filters.getContains_character().isEmpty() || (filters.getContains_character() != null && filters.getContains_character().length() > 1)) {
             return ResponseEntity.status(HttpStatusCode.valueOf(400)).body("Invalid query parameter values or types");
         }
 
         // apply filters and get results from database
-        List<StringPropertiesModel> results = databaseEntity.getStringsByFilter(is_palindrome, min_length, max_length,
-                word_count, contains_character);
+        List<StringPropertiesModel> results = databaseEntity.getStringsByFilter(filters);
 
         List<ResponseModel> resultsMain = new ArrayList<>();
 
@@ -109,50 +103,28 @@ public class StringAnalyzerApiController {
             resultsMain.add(new ResponseModel(result.getString(), result, Instant.now(), result.getSha256_hash()));
         }
 
-        Map<String, Object> filters = new HashMap<>();
-
-        filters.put("is_palindrome", is_palindrome);
-        filters.put("min_length", min_length);
-        filters.put("max_length", max_length);
-        filters.put("word_count", word_count);
-        filters.put("contains_character", contains_character);
-
-        Map<String, Object> filters_applied = filters.entrySet().stream().filter(entry -> entry.getValue() != null)
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-
         QueryResponseModel response = new QueryResponseModel();
         response.setData(resultsMain);
         response.setCount(results.size());
-        response.setFilters_applied(filters_applied);
+        response.setFilters_applied(filters);
 
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/strings/filter-by-natural-language")
     public ResponseEntity<NLQueryResponseModel> getStringByNL (@RequestParam String query) {
-        // filters list
-        Boolean isPalindrome;
-        Integer minLength;
-        Integer maxLength;
-        Integer wordCount;
-        String containsCharacter;
 
         // parsed query filters
         FilterModel queryFilters = nlQueryParserService.stringToFilter(query);
 
-        //set filter variables
-        isPalindrome = queryFilters.getIs_palindrome();
-        minLength = queryFilters.getMin_length();
-        maxLength = queryFilters.getMax_length();
-        wordCount = queryFilters.getWord_count();
-        containsCharacter = queryFilters.getContains_character();
-
-        if (isPalindrome == null && minLength == null && maxLength == null && wordCount == null && containsCharacter == null) {
+        if (queryFilters.getIs_palindrome() == null && queryFilters.getMin_length() == null &&
+                queryFilters.getMax_length() == null && queryFilters.getWord_count() == null &&
+                queryFilters.getContains_character() == null) {
             return new ResponseEntity<>(HttpStatusCode.valueOf(400));
         }
 
         // execute query with filters
-        List<StringPropertiesModel> results = databaseEntity.getStringsByFilter(isPalindrome, minLength, maxLength, wordCount, containsCharacter);
+        List<StringPropertiesModel> results = databaseEntity.getStringsByFilter(queryFilters);
         List<ResponseModel> resultsMain = new ArrayList<>();
 
         // data part of result
